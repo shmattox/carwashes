@@ -22,6 +22,7 @@ Meteor.publish("yelpconfig", function() {
 //               } else {
 //                    Discounts.update({_id:Meteor.userId()}, { $push:{"discount":str}})
 //               }
+//
 //               return true;
 //               },
 //               removeOrder: function(str) {
