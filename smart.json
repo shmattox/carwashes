@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "iron-router": {},
+    "font-awesome": {},
+    "leaflet": {},
+    "sass": {},
+    "simple-schema": {},
+    "accounts-auth0": {},
+    "autoform": {}
+  }
+}

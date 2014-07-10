@@ -1,0 +1,34 @@
+/* CSS declarations go here */
+
+body {
+margin: 0px;
+padding: 0px;
+}
+
+#main_header {
+    border-bottom: 1px solid black;
+    padding: 10px;
+    #login-buttons {
+        float: right;
+    }
+}
+#map-container {
+    border-bottom: 1px solid black;
+}
+
+.leaflet-div-icon {
+    border-radius: 50%;
+    border: none;
+    line-height: 30px;
+    font-family: verdana;
+    text-align: center;
+    color: white;
+    opacity: .8;
+    vertical-align: center;
+}
+.leaflet-div-icon.public {
+    background: #49AFCD;
+}
+.leaflet-div-icon.private {
+    background: #DA4F49;
+}

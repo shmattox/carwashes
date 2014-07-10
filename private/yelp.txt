@@ -1,0 +1,9 @@
+API v1.0
+YWSID
+3kHncFR1tH3zIPEU2oh9Kg
+
+API v2.0
+Consumer Key	-pO5DHVphk4WHBztWIMUtQ
+Consumer Secret	TaQkt2EnUyA9QBUnbOmqlrY__gE
+Token	JhVBagzU7kzjs_t9UJ-jHWrYpCGSYmq2
+Token Secret	-Z5QJS6IkWxeOPCwpSM2zo8iDlc

@@ -1,0 +1,73 @@
+<head>
+    <title>Car Washes Near Me</title>
+</head>
+
+<body>
+</body>
+
+<body>
+</body>
+
+<template name="masterLayout">
+    <header id="main_header">
+        {{> header}}
+    </header>
+    <div id="content">
+        {{> yield}}
+    </div>
+</template>
+
+<template name="header">
+    <a href="/">Logo</a>
+    {{> loginButtons align="right"}}
+</template>
+
+<template name="menu">
+    <nav id="main_nav">
+        <ul>
+            <li><a href="">Link 1</a></li>
+            <li><a href="">Link 1</a></li>
+        </ul>
+    </nav>
+</template>
+
+<template name="loading">
+    <h1>loading...</h1>
+</template>
+
+<template name="notFound">
+    <p>page not found</p>
+    <a href="/">Back to Home</a>
+</template>
+
+
+<template name="home">
+    {{> map}}
+    <p>home page</p>
+    <p>{{api}}</p>
+    <p>end data</p>
+</template>
+
+<template name="map">
+    <div id="map-container">
+        {{> map_canvas}}
+    </div>
+</template>
+
+<template name="map_canvas">
+    <div id="map_canvas" class="map">map here</div>
+</template>
+
+<template name='configureYelp'>
+    <div class="container">
+        <div class="section">
+            <h1>Yelp API Access Configuration</h1>
+            <p class="lead">Do not change if you don't know what you are doing.</p>
+            <p>{{currentConfig}}</p>
+            {{> quickForm schema=configureYelp doc=this id='configureYelp' type='method' meteormethod='configureYelp' buttonClasses="btn btn-primary" buttonContent="Configure Yelp"}}
+        </div>
+    </div>
+</template>
+
+
+
