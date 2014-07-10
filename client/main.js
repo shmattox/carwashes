@@ -219,7 +219,7 @@ Template.configureYelp.helpers({
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 Template.home.api = function() {
-    //yelp api return
+    //yelp api
     console.log("print yelp api below");
     return Meteor.call("searchYelp", "car+wash", "false",function(error, results) {
                        console.log(error);
