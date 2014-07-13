@@ -21,7 +21,6 @@ var getYelpOauthBinding = function(url) {
     }
 }
 
-
 Meteor.methods({
                searchYelp: function(search, isCategory, latitude, longitude) {
                        //this.unblock();

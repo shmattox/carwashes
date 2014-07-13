@@ -76,6 +76,7 @@ var initialize = function(element, centroid, zoom, features) {
                 boxZoom: false,
                 touchZoom: false
                 }).setView(new L.LatLng(centroid[0], centroid[1]), zoom);
+
     
     //Set Marker to Map
     L.marker([currentLat, currentLng]).addTo(map);
