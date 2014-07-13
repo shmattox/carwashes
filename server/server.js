@@ -47,13 +47,11 @@ Meteor.methods({
                             parameters.location = "Saint+Petersburg";
                        }
                
+                        //Search Radius
                        parameters.radius_filter = "40000";
                
                        // Results limited to 5
                        parameters.limit = 2;
-               
-                       //Log the API result to console
-                       console.log(oauthBinding.get(url, parameters).data);
                
                        // Only return .data because that is how yelp formats its responses
                        return oauthBinding.get(url, parameters);

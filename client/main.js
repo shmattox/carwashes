@@ -49,15 +49,27 @@ Router.map(function() {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+//Adjust for screen size
 $(window).resize(function () {
                  var h = $(window).height(), offsetTop = 0;
                  $mc = $('#map_canvas');
                  $mc.css('height', (h - offsetTop));
                  }).resize();
 
+//Define Map variables
 var map, markers = [ ];
+var currentLat = Session.get("currentLat");
+var currentLng = Session.get("currentLng");
 
+//Check Session for Lat/Lng and set if needed
+if(!Session.get("currentLat")){
+    Session.set("currentLat","27.770220499999997");
+    Session.set("currentLng","-82.65385220000002");
+}
+
+//start the map
 var initialize = function(element, centroid, zoom, features) {
+    //Build Map initial map settings
     map = L.map(element, {
                 scrollWheelZoom: false,
                 doubleClickZoom: false,
@@ -65,6 +77,10 @@ var initialize = function(element, centroid, zoom, features) {
                 touchZoom: false
                 }).setView(new L.LatLng(centroid[0], centroid[1]), zoom);
     
+    //Set Marker to Map
+    L.marker([currentLat, currentLng]).addTo(map);
+    
+    //Map Layer Tile and Style
     L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {opacity: .5}).addTo(map);
 
 }
@@ -128,14 +144,6 @@ Template.map.rendered = function() {
     // initialize map events
     if (!map) {
         
-        
-        if(!Session.get("currentLat")){
-            Session.set("currentLat","27.770220499999997");
-            Session.set("currentLng","-82.65385220000002");
-        }
-        var currentLat = Session.get("currentLat");
-        var currentLng = Session.get("currentLng");
-        
         initialize($("#map_canvas")[0], [ currentLat, currentLng ], 13);
         
         map.on("dblclick", function(e) {
@@ -178,12 +186,6 @@ Template.home.events({
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 Template.home.yelpResult = function() {
-    if(!Session.get("currentLat")){
-        Session.set("currentLat","27.770220499999997");
-        Session.set("currentLng","-82.65385220000002");
-    }
-    var currentLat = Session.get("currentLat");
-    var currentLng = Session.get("currentLng");
     Meteor.call("searchYelp", "carwash", true, currentLat,currentLng,function(error, results) {
                 if(results){
                         Session.set("yelpResult", JSON.parse(results.content));
