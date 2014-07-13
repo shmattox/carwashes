@@ -8,7 +8,9 @@
       "sass": {},
       "simple-schema": {},
       "accounts-auth0": {},
-      "autoform": {}
+      "autoform": {},
+      "npm": {},
+      "Geolocation": {}
     },
     "packages": {
       "iron-router": {
@@ -45,6 +47,16 @@
         "git": "https://github.com/aldeed/meteor-autoform.git",
         "tag": "v0.14.0",
         "commit": "30de032833052ea61e9d37bca5523264309d4478"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "Geolocation": {
+        "git": "https://github.com/hculap/geolocation.git",
+        "tag": "v0.1.0",
+        "commit": "17485d2e08301febefafda5997f803d4ac971bdb"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

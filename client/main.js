@@ -9,7 +9,6 @@ restaurants = new Meteor.Collection("discounts");
 
 //subscribe to Collection Feeds
 Meteor.subscribe("discounts");
-Meteor.subscribe("yelpconfig");
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,8 +43,6 @@ Router.map(function() {
                       });
            });
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 //                                          Map Area
@@ -69,16 +66,7 @@ var initialize = function(element, centroid, zoom, features) {
                 }).setView(new L.LatLng(centroid[0], centroid[1]), zoom);
     
     L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {opacity: .5}).addTo(map);
-    
-    //    //Add if check to see if user is DD driver and show controls
-    //    map.attributionControl.setPrefix('');
-    //
-    //	var attribution = new L.Control.Attribution();
-    //    attribution.addAttribution("Geocoding data &copy; 2013 <a href='http://open.mapquestapi.com'>MapQuest, Inc.</a>");
-    //    attribution.addAttribution("Map tiles by <a href='http://stamen.com'>Stamen Design</a> under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>.");
-    //    attribution.addAttribution("Data by <a href='http://openstreetmap.org'>OpenStreetMap</a> under <a href='http://creativecommons.org/licenses/by-sa/3.0'>CC BY SA</a>.");
-    //
-    //    map.addControl(attribution);
+
 }
 
 var addMarker = function(marker) {
@@ -107,7 +95,6 @@ var openCreateDialog = function (latlng) {
     Session.set("showCreateDialog", true);
 };
 
-
 Template.map.created = function() {
 //    discounts.find({}).observe({
 //                              added: function(store) {
@@ -129,88 +116,60 @@ Template.map.created = function() {
 //                              });
 }
 
-
-
-
 //Map Helpers
 Template.map.rendered = function() {
     
     // basic housekeeping
     $(window).resize(function () {
-                     var h = $(window).height(), offsetTop = 300; // Calculate the top offset
+                     var h = $(window).height(), offsetTop = 300;
                      $('#map_canvas').css('height', (h - offsetTop));
                      }).resize();
     
     // initialize map events
     if (!map) {
-        initialize($("#map_canvas")[0], [ 27.770220499999997, -82.65385220000002 ], 13);
+        
+        
+        if(!Session.get("currentLat")){
+            Session.set("currentLat","27.770220499999997");
+            Session.set("currentLng","-82.65385220000002");
+        }
+        var currentLat = Session.get("currentLat");
+        var currentLng = Session.get("currentLng");
+        
+        initialize($("#map_canvas")[0], [ currentLat, currentLng ], 13);
         
         map.on("dblclick", function(e) {
-               if (! Meteor.userId()) // must be logged in to create parties
-               return;
-               
+               if (! Meteor.userId()){
+                    return;
+               }
                openCreateDialog(e.latlng);
                });
     }
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-//                                  Yelp Configure Area
+//                                       GeoLocation
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// Using SimpleSchema
-Schema = [];
-Schema.configureYelp = new SimpleSchema({
-                                        consumerKey: {
-                                        type: String,
-                                        label: "Yelp Consumer Key"
-                                        },
-                                        consumerSecret: {
-                                        type: String,
-                                        label: "Yelp Consumer Secret"
-                                        },
-                                        accessToken: {
-                                        type: String,
-                                        label: "Yelp Access Token"
-                                        },
-                                        accessTokenSecret: {
-                                        type: String,
-                                        label: "Yelp Access Token Secret"
-                                        }
-                                        });
+var geo = Geolocation.getInstance();
 
-Meteor.methods({
-               configureYelp: function(oauth_config) {
-                    check(oauth_config, Schema.configureYelp);
-               
-                    ServiceConfiguration.configurations.remove({
-                                                         service: "yelp"
-                                                         });
-               
-                    ServiceConfiguration.configurations.insert({
-                                                          service:      "yelp",
-                                                          consumerKey: oauth_config.consumerKey,
-                                                          consumerSecret: oauth_config.consumerSecret,
-                                                          accessToken: oauth_config.accessToken,
-                                                          accessTokenSecret: oauth_config.accessTokenSecret
-                                                         });
-               }
+Meteor.startup(function () {
+               console.log(geo.localize());
+               var x = geo.localize();
+               console.log(x.lat + ":" + x.lng);
+               console.log(x.timeout);
                });
 
 
-Template.configureYelp.helpers({
-                               configureYelp: function() {
-                                    return Schema.configureYelp;
-                               },
-                               currentConfig: function() {
-                                    ServiceConfiguration.configurations.findOne({service: 'yelp'});
-                               }
-                               });
-
+Template.home.events({
+                     "click #search_yelp": function () {
+                            console.log(geo.localize().lat + " : " + geo.localize().lng);
+                            Session.set("currentLat", geo.localize().lat);
+                            Session.set("currentLng", geo.localize().lng);
+                     }
+                     });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -218,11 +177,23 @@ Template.configureYelp.helpers({
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-Template.home.api = function() {
-    //yelp api
-    console.log("print yelp api below");
-    return Meteor.call("searchYelp", "car+wash", "false",function(error, results) {
-                       console.log(error);
-                       console.log(results.content);
-                       });
+Template.home.yelpResult = function() {
+    if(!Session.get("currentLat")){
+        Session.set("currentLat","27.770220499999997");
+        Session.set("currentLng","-82.65385220000002");
+    }
+    var currentLat = Session.get("currentLat");
+    var currentLng = Session.get("currentLng");
+    Meteor.call("searchYelp", "carwash", true, currentLat,currentLng,function(error, results) {
+                if(results){
+                        Session.set("yelpResult", JSON.parse(results.content));
+                }else {
+                        Session.set("yelpResult", error);
+                }
+                });
+    if(Session.get("yelpResult")){
+        return(Session.get("yelpResult"));
+    }else {
+        return "no data received from server";
+    }
 }

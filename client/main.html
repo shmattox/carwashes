@@ -43,9 +43,12 @@
 
 <template name="home">
     {{> map}}
-    <p>home page</p>
-    <p>{{api}}</p>
-    <p>end data</p>
+    {{#each yelpResult.businesses}}
+            <h3>{{name}}</h3>
+            <p><b>Location:</b> {{location.address}} , {{location.city}}</p>
+            <hr/>
+    {{/each}}
+    <a href="" id="search_yelp">Search Local</a>
 </template>
 
 <template name="map">
@@ -55,7 +58,7 @@
 </template>
 
 <template name="map_canvas">
-    <div id="map_canvas" class="map">map here</div>
+    <div id="map_canvas" class="map"></div>
 </template>
 
 <template name='configureYelp'>

@@ -6,6 +6,8 @@
     "sass": {},
     "simple-schema": {},
     "accounts-auth0": {},
-    "autoform": {}
+    "autoform": {},
+    "npm": {},
+    "Geolocation": {}
   }
 }
