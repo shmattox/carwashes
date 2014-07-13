@@ -144,6 +144,10 @@ Template.map.rendered = function() {
     // initialize map events
     if (!map) {
         
+        //Get Current Lat/Lng from Session
+        var currentLat = Session.get("currentLat");
+        var currentLng = Session.get("currentLng");
+        
         initialize($("#map_canvas")[0], [ currentLat, currentLng ], 13);
         
         map.on("dblclick", function(e) {
@@ -186,6 +190,8 @@ Template.home.events({
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 Template.home.yelpResult = function() {
+    var currentLat = Session.get("currentLat");
+    var currentLng = Session.get("currentLng");
     Meteor.call("searchYelp", "carwash", true, currentLat,currentLng,function(error, results) {
                 if(results){
                         Session.set("yelpResult", JSON.parse(results.content));
