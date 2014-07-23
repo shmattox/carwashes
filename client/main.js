@@ -142,6 +142,60 @@ Template.masterLayout.notcurrentuser = function () {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
+//                                       Configure Yelp
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// Using SimpleSchema
+var Schema=[];
+Schema.configureYelp = new SimpleSchema({
+                                        consumerKey: {
+                                        type: String,
+                                        label: "Yelp Consumer Key"
+                                        },
+                                        consumerSecret: {
+                                        type: String,
+                                        label: "Yelp Consumer Secret"
+                                        },
+                                        accessToken: {
+                                        type: String,
+                                        label: "Yelp Access Token"
+                                        },
+                                        accessTokenSecret: {
+                                        type: String,
+                                        label: "Yelp Access Token Secret"
+                                        }
+                                        });
+
+Meteor.methods({
+               configureYelp: function(oauth_config) {
+               check(oauth_config, Schema.configureYelp);
+               
+               ServiceConfiguration.configurations.remove({
+                                                         service: "yelp"
+                                                         });
+               
+               ServiceConfiguration.configurations.insert({
+                                                         service: 'yelp',
+                                                         consumerKey: oauth_config.consumerKey,
+                                                         consumerSecret: oauth_config.consumerSecret,
+                                                         accessToken: oauth_config.accessToken,
+                                                         accessTokenSecret: oauth_config.accessTokenSecret
+                                                         });
+               }
+               });
+
+Template.configureYelp.helpers({
+                               configureYelp: function() {
+                               return Schema.configureYelp;
+                               },
+                               currentConfig: function() {
+                               ServiceConfiguration.configurations.findOne({service: 'yelp'});
+                               }
+                               });
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
 //                                          Map Area
 //
 //////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,6 @@
 //               });
 //
 
-
 var getYelpOauthBinding = function(url) {
     var config = ServiceConfiguration.configurations.findOne({service: "yelp"});
     if (config) {
