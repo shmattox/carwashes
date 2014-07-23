@@ -165,6 +165,9 @@ var initialize = function(element, centroid, zoom, features) {
                 touchZoom: false
                 }).setView(new L.LatLng(centroid[0], centroid[1]), zoom);
     
+    //Set Default Image Path
+    L.Icon.Default.imagePath = '/packages/leaflet/images';
+    
     //Get Marker Lat Lng Info through Yelp Call
     Meteor.call("searchYelp", "carwash", true, centroid[0], centroid[1],function(error, results) {
                 if(results){
