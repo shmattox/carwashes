@@ -23,3 +23,7 @@ auth0
 oauth1
 npm
 Geolocation
+geocoder
+server-session
+voltage
+bootstrap-3

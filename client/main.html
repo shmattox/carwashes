@@ -10,23 +10,41 @@
 
 <template name="masterLayout">
     <header id="main_header">
+        <div class="container-fluid">
         {{> header}}
+        </div>
     </header>
-    <div id="content">
+    <div id="content" class="container-fluid">
         {{> yield}}
     </div>
 </template>
 
 <template name="header">
-    <a href="/">Logo</a>
+    <a id="logo" href="/">LocalCarWashes</a>
     {{> loginButtons align="right"}}
+    {{> menu}}
 </template>
 
 <template name="menu">
-    <nav id="main_nav">
-        <ul>
-            <li><a href="">Link 1</a></li>
-            <li><a href="">Link 1</a></li>
+    <nav id="main_nav" class="pull-right">
+        <ul class="nav nav-pills">
+            <li>
+                <a href="{{pathFor 'home'}}">Home</a>
+            </li>
+            <li>
+                <a href="{{pathFor 'about'}}">About</a>
+            </li>
+            <li>
+                <a href="{{pathFor 'how'}}">How It Works</a>
+            </li>
+            <li>
+                <a href="{{pathFor 'contact'}}">Contact Us</a>
+            </li>
+            {{#if currentUser}}
+            <li>
+                <a href="{{pathFor 'profile'}}">Profile</a>
+            </li>
+            {{/if}}
         </ul>
     </nav>
 </template>
@@ -40,16 +58,36 @@
     <a href="/">Back to Home</a>
 </template>
 
+<template name="profile">
+    {{#each currentUser.emails}}
+    <p>{{address}}</p>
+    {{/each}}
+</template>
 
 <template name="home">
     {{> map}}
-    {{#each yelpResult.businesses}}
+    {{#if yelpResult}}
+    {{#each yelpResult}}
+    <div id="{{id}}" class="business-listing">
             <h3>{{name}}</h3>
             <p><b>Location:</b> {{location.address}} , {{location.city}}</p>
-            <hr/>
+    </div>
+    <hr/>
     {{/each}}
-    <a href="" id="search_yelp">Search Local</a>
+    {{/if}}
 </template>
+
+
+<template name="thebusiness">
+    <div id="business_page_header {{business.id}}">
+    <h3>{{business.name}}</h3>
+    {{#if business.phone}}<p>Phone: {{business.phone}}</p>{{/if}}
+    <img id="star_rating" src="{{business.rating_img_url}}"/>
+    <p><b>{{business.location.address}}</b>, {{business.location.city}}</p>
+    </div>
+    {{> map}}
+</template>
+
 
 <template name="map">
     <div id="map-container">

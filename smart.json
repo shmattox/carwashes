@@ -8,6 +8,10 @@
     "accounts-auth0": {},
     "autoform": {},
     "npm": {},
-    "Geolocation": {}
+    "Geolocation": {},
+    "geocoder": {},
+    "server-session": {},
+    "voltage": {},
+    "bootstrap-3": {}
   }
 }

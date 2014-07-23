@@ -1,10 +1,17 @@
 /* CSS declarations go here */
+@import url(http://fonts.googleapis.com/css?family=Lobster);
 
 body {
 margin: 0px;
 padding: 0px;
 }
-
+#logo {
+font-family: 'Lobster', cursive;
+font-size: 28px;
+}
+#main_header #login-buttons {
+padding: 12px;
+}
 #main_header {
     border-bottom: 1px solid black;
     padding: 10px;
@@ -31,4 +38,27 @@ padding: 0px;
 }
 .leaflet-div-icon.private {
     background: #DA4F49;
+}
+
+#business_page_header #star_rating{
+    float: right;
+}
+
+.map-div-icon {
+  border: none;
+  line-height: 40px;
+  text-align: center;
+  color: black;
+  font-size: 40px;
+  vertical-align: middle;
+}
+
+#voltage-editor-btns {
+text-align: right;
+}
+#voltage-data {
+width: 100%;
+}
+#voltage-editor.ace_editor {
+min-height: 420px;
 }
