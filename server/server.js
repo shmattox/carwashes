@@ -6,14 +6,6 @@
 //               });
 //
 
-ServiceConfiguration.configurations.remove({service: "yelp"});
-ServiceConfiguration.configurations.insert({
-                                           service: "yelp",
-                                           consumerKey: "-pO5DHVphk4WHBztWIMUtQ",
-                                           consumerSecret: "TaQkt2EnUyA9QBUnbOmqlrY__gE",
-                                           accessToken: "JhVBagzU7kzjs_t9UJ-jHWrYpCGSYmq2",
-                                           accessTokenSecret: "-Z5QJS6IkWxeOPCwpSM2zo8iDlc"
-                                           });
 
 var getYelpOauthBinding = function(url) {
     var config = ServiceConfiguration.configurations.findOne({service: "yelp"});
