@@ -79,7 +79,6 @@
 
 <template name="home">
     {{> map}}
-    {{#if yelpResult}}
     {{#each yelpResult}}
     <div id="{{id}}" class="business-listing">
             <h3>{{name}}</h3>
@@ -87,7 +86,6 @@
     </div>
     <hr/>
     {{/each}}
-    {{/if}}
 </template>
 
 <template name="thebusiness">

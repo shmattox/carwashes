@@ -300,14 +300,8 @@ Template.home.yelpResult = function() {
         ServerSession.set("currentLng","-122.375336");
     }
 
-    theResult = ServerSession.get("yelpResult");
-    
-    if(theResult){
-        console.log(theResult);
-        return(theResult);
-    }else {
-        return "false";
-    }
+    console.log(ServerSession.get("yelpResult"));
+    return ServerSession.get("yelpResult");
 }
 
 Template.home.events({
