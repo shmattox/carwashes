@@ -1,5 +1,6 @@
 /* CSS declarations go here */
 @import url(http://fonts.googleapis.com/css?family=Lobster);
+@import url(http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps:700);
 
 body {
 margin: 0px;
@@ -61,5 +62,18 @@ width: 100%;
 }
 #voltage-editor.ace_editor {
 min-height: 420px;
+}
+
+footer .bairkan {
+color: black;
+font-family: 'Oleo Script Swash Caps', cursive;
+font-size: 22px;
+text-decoration: none;
+}
+footer .col-sm-4:nth-of-type(2) {
+text-align: center;
+}
+footer .col-sm-4:nth-of-type(3) {
+text-align: right;
 }
 
