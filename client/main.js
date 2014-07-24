@@ -1,6 +1,3 @@
-//
-// old url http:// carwashes.herokuapp.com
-//
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 //                                       Import Collections
@@ -27,11 +24,6 @@ Router.configure({
                  loadingTemplate: 'loading'
                  });
 
-//Global Router Hook for Back button
-Router.onStop(function() {
-              
-              });
-
 //Setup iron router page routes
 Router.map(function() {
            this.route('home', {
@@ -40,9 +32,6 @@ Router.map(function() {
                             ServerSession.set("selectedBusiness","");
                             ServerSession.set("selectedBusinessData","");
                       }
-                      });
-           this.route('profile', {
-                      path: '/profile'
                       });
            this.route('thebusiness', {
                       path: '/thebusiness',
@@ -60,6 +49,9 @@ Router.map(function() {
                           return false;
                           }
                       }
+                      });
+           this.route('profile', {
+                      path: '/profile'
                       });
            this.route('about', {
                       path: '/about',
@@ -115,6 +107,13 @@ var CW_AfterHooks = {
             var currentLng = ServerSession.get("currentLng");
             
             initialize($("#map_canvas")[0], [ currentLat, currentLng ], 10);
+            
+            $("#business-listing").on("click", function(e) {
+                                      e.preventDefault();
+                                      console.log("clicked it");
+                                      ServerSession.set("selectedBusiness",this.name);
+                                      Router.go("thebusiness");
+                                      });
         }
     }
 }
@@ -139,7 +138,6 @@ Template.masterLayout.notcurrentuser = function () {
         return true;
     }
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -183,6 +181,16 @@ var initialize = function(element, centroid, zoom, features) {
                                   lat = "";
                                   lng = "";
                                   
+                                  //Set Popup View Deals Bind Object
+                                  var domelem = document.createElement('a');
+                                  domelem.href = Router.path('thebusiness');
+                                  domelem.innerHTML = "View Discounts";
+                                  domelem.onclick = function() {
+                                        ServerSession.set("selectedBusiness",result.id);
+                                        Router.go("thebusiness");
+                                  };
+                                  
+                                  
                                   //Create Print Marker Function
                                   var printMarker = function(result, lat, lng){
                                           if(ServerSession.get("selectedBusinessData")){
@@ -190,7 +198,7 @@ var initialize = function(element, centroid, zoom, features) {
                                           L.marker([lat,lng]).addTo(map).bindPopup("<h3>" + result.name + "</h3><img src='" + result.rating_img_url + "'/><p>" + result.location.display_address + "</p><a target='_blank' href='" + result.url + "'>View on Yelp</a>").openPopup();
                                           }
                                           } else {
-                                          L.marker([lat,lng]).addTo(map).bindPopup("<h3>" + result.name + "</h3><img src='" + result.rating_img_url + "'/><p>" + result.location.display_address + "</p><a href='" + Router.path('thebusiness') + "' class='business-listing'>View Discounts</a> | <a target='_blank' href='" + result.url + "'>View on Yelp</a>");
+                                          L.marker([lat,lng]).addTo(map).bindPopup("<h3>" + result.name + "</h3><img src='" + result.rating_img_url + "'/><p>" + result.location.display_address + "</p><a href='" + Router.path('thebusiness') + "' id='" + result.id + "' class='business-listing'>View Discounts</a> | <a target='_blank' href='" + result.url + "'>View on Yelp</a>");
                                           
                                           }
                                   }
@@ -234,6 +242,14 @@ var initialize = function(element, centroid, zoom, features) {
                          });
     }
     
+    //Set Even Trigger
+    map.on('popupopen', function() {
+           $('.business-listing').click(function(e){
+                                        ServerSession.set("selectedBusiness",this.id);
+                                        Router.go("thebusiness");
+                                        });
+           });
+    
     //Set Custom Marker to Current Location
     L.marker([ServerSession.get("currentLat"),ServerSession.get("currentLng")],{icon:createIcon()}).addTo(map);
     
@@ -247,15 +263,7 @@ var initialize = function(element, centroid, zoom, features) {
         var lng = business.location.coordinate.longitude;
         map.panTo([lat,lng]).openPopup();
     }
-
 }
-
-Template.map.events({
-                     "click .business-listing": function(){
-                     ServerSession.set("selectedBusiness",this.name);
-                     Router.go("thebusiness");
-                     }
-                     });
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
