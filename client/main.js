@@ -28,16 +28,25 @@ Router.configure({
 Router.map(function() {
            this.route('home', {
                       path: '/',
+                      waitOn: function(){
+                          //Check Session for Lat/Lng and set if needed
+                          var geo = Geolocation.getInstance();
+                          var x = geo.localize();
+                          if(x.lat){
+                                ServerSession.set("currentLat",x.lat);
+                                ServerSession.set("currentLng",x.lng);
+                          }
+                          //Get Marker Lat Lng Info through Yelp Call
+                          Meteor.call("searchYelp", "carwash", true, x.lat, x.lng, function(error, results) {
+                                      if(results){
+                                      var theResult = JSON.parse(results.content).businesses;
+                                      ServerSession.set("yelpResult", theResult);
+                                      }
+                                      });
+                      },
                       onBeforeAction: function(){
-                              //Check Session for Lat/Lng and set if needed
-                              var geo = Geolocation.getInstance();
-                              var x = geo.localize();
-                              if(x.lat){
-                                    ServerSession.set("currentLat",x.lat);
-                                    ServerSession.set("currentLng",x.lng);
-                              }
-                              ServerSession.set("selectedBusiness","");
-                              ServerSession.set("selectedBusinessData","");
+                                  ServerSession.set("selectedBusiness","");
+                                  ServerSession.set("selectedBusinessData","");
                       }
                       });
            this.route('thebusiness', {
@@ -110,13 +119,13 @@ var CW_AfterHooks = {
                              $('#map_canvas').css('height', (h - offsetTop));
                              }).resize();
             
-//            //Check Session for Lat/Lng and set if needed
-//            var geo = Geolocation.getInstance();
-//            var x = geo.localize();
-//            if(x.lat){
-//                ServerSession.set("currentLat",x.lat);
-//                ServerSession.set("currentLng",x.lng);
-//            }
+            //Check Session for Lat/Lng and set if needed
+            var geo = Geolocation.getInstance();
+            var x = geo.localize();
+            if(x.lat){
+                ServerSession.set("currentLat",x.lat);
+                ServerSession.set("currentLng",x.lng);
+            }
             
             //Get Current Lat/Lng from Session
             var currentLat = ServerSession.get("currentLat");
@@ -126,7 +135,6 @@ var CW_AfterHooks = {
             
             $("#business-listing").on("click", function(e) {
                                       e.preventDefault();
-                                      console.log("clicked it");
                                       ServerSession.set("selectedBusiness",this.name);
                                       Router.go("thebusiness");
                                       });
