@@ -181,16 +181,6 @@ var initialize = function(element, centroid, zoom, features) {
                                   lat = "";
                                   lng = "";
                                   
-                                  //Set Popup View Deals Bind Object
-                                  var domelem = document.createElement('a');
-                                  domelem.href = Router.path('thebusiness');
-                                  domelem.innerHTML = "View Discounts";
-                                  domelem.onclick = function() {
-                                        ServerSession.set("selectedBusiness",result.id);
-                                        Router.go("thebusiness");
-                                  };
-                                  
-                                  
                                   //Create Print Marker Function
                                   var printMarker = function(result, lat, lng){
                                           if(ServerSession.get("selectedBusinessData")){
@@ -273,7 +263,7 @@ var initialize = function(element, centroid, zoom, features) {
 
 Template.home.yelpResult = function() {
     
-    //Check Session for Lat/Lng and set if needed ( San Fran
+    //Check Session for Lat/Lng and set if needed ( San Fran )
     if(!ServerSession.get("currentLat")){
         ServerSession.set("currentLat","37.523052");
         ServerSession.set("currentLng","-122.375336");
@@ -282,6 +272,7 @@ Template.home.yelpResult = function() {
     theResult = ServerSession.get("yelpResult");
     
     if(theResult){
+        console.log(theResult);
         return(theResult);
     }else {
         return "false";
