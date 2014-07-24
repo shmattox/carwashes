@@ -35,14 +35,21 @@ Router.map(function() {
                           if(x.lat){
                                 ServerSession.set("currentLat",x.lat);
                                 ServerSession.set("currentLng",x.lng);
-                          }
-                          //Get Marker Lat Lng Info through Yelp Call
-                          Meteor.call("searchYelp", "carwash", true, x.lat, x.lng, function(error, results) {
-                                      if(results){
-                                      var theResult = JSON.parse(results.content).businesses;
-                                      ServerSession.set("yelpResult", theResult);
-                                      }
-                                      });
+                      }
+                      
+                      navigator.geolocation.getCurrentPosition(function(position) {
+                               ServerSession.set("currentLat", position.coords.latitude);
+                               ServerSession.set("currentLng", position.coords.longitude);
+                                                               
+                               //Get Marker Lat Lng Info through Yelp Call
+                               Meteor.call("searchYelp", "carwash", true, position.coords.latitude, position.coords.longitude, function(error, results) {
+                                           if(results){
+                                           var theResult = JSON.parse(results.content).businesses;
+                                           ServerSession.set("yelpResult", theResult);
+                                           }
+                                           });
+                      });
+                      
                       },
                       onBeforeAction: function(){
                                   ServerSession.set("selectedBusiness","");

@@ -42,7 +42,7 @@ Meteor.methods({
                        if(longitude && latitude){
                             parameters.ll = latitude + "," + longitude;
                        } else {
-                            parameters.location = "Saint+Petersburg";
+                            parameters.location = "San+Francisco";
                        }
                
                         //Search Radius
