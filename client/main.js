@@ -29,8 +29,15 @@ Router.map(function() {
            this.route('home', {
                       path: '/',
                       onBeforeAction: function(){
-                            ServerSession.set("selectedBusiness","");
-                            ServerSession.set("selectedBusinessData","");
+                              //Check Session for Lat/Lng and set if needed
+                              var geo = Geolocation.getInstance();
+                              var x = geo.localize();
+                              if(x.lat){
+                                    ServerSession.set("currentLat",x.lat);
+                                    ServerSession.set("currentLng",x.lng);
+                              }
+                              ServerSession.set("selectedBusiness","");
+                              ServerSession.set("selectedBusinessData","");
                       }
                       });
            this.route('thebusiness', {
@@ -103,13 +110,13 @@ var CW_AfterHooks = {
                              $('#map_canvas').css('height', (h - offsetTop));
                              }).resize();
             
-            //Check Session for Lat/Lng and set if needed
-            var geo = Geolocation.getInstance();
-            var x = geo.localize();
-            if(x.lat){
-                ServerSession.set("currentLat",x.lat);
-                ServerSession.set("currentLng",x.lng);
-            }
+//            //Check Session for Lat/Lng and set if needed
+//            var geo = Geolocation.getInstance();
+//            var x = geo.localize();
+//            if(x.lat){
+//                ServerSession.set("currentLat",x.lat);
+//                ServerSession.set("currentLng",x.lng);
+//            }
             
             //Get Current Lat/Lng from Session
             var currentLat = ServerSession.get("currentLat");
