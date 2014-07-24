@@ -80,6 +80,15 @@ Router.map(function() {
                       Voltage.render(this);
                       }
                       });
+           this.route('privacy', {
+                      path: '/privacy-policy',
+                      waitOn: function() {
+                      return Meteor.subscribe('voltagePages');
+                      },
+                      action: function() {
+                      Voltage.render(this);
+                      }
+                      });
            });
 
 var CW_AfterHooks = {
