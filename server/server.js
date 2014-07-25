@@ -55,24 +55,26 @@ Meteor.methods({
                        return oauthBinding.get(url, parameters);
                },
                getLatLng: function(adr){
-               
                         var geo = new GeoCoder();
                         var result = geo.geocode(adr);
                         return result;
                },
-               getLocation: function(){
-                        var geo = Geolocation.getInstance();
-                        var x = geo.localize();
-                        return x;
-               },
                getProfile: function(str) {
-               return Meteor.user({_id:Meteor.userId()});
+                        return Meteor.user({_id:Meteor.userId()});
                }
                
                });
 
-
 Meteor.startup(function () {
-               // code to run on server at startup
+               // bootstrap the admin user if they exist -- You'll be replacing the id later
+               if (Meteor.users.findOne("cQBuMJpBR94KaggLg"))
+               Roles.addUsersToRoles("cQBuMJpBR94KaggLg", ['admin']);
+               
+               // create a couple of roles if they don't already exist (THESE ARE NOT NEEDED -- just for the demo)
+               if(!Meteor.roles.findOne({name: "owner"}))
+               Roles.createRole("owner");
+               
+               if(!Meteor.roles.findOne({name: "user"}))
+               Roles.createRole("user");
 });
 

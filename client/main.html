@@ -34,7 +34,6 @@
 
 <template name="header">
     <a id="logo" href="{{pathFor 'home'}}">LocalCarWash</a>
-    {{> loginButtons align="right"}}
     {{> menu}}
 </template>
 
@@ -58,6 +57,7 @@
                 <a href="{{pathFor 'profile'}}">Profile</a>
             </li>
             {{/if}}
+            {{> loginButtons align="right"}}
         </ul>
     </nav>
 </template>
@@ -72,9 +72,19 @@
 </template>
 
 <template name="profile">
-    {{#each currentUser.emails}}
-    <p>{{address}}</p>
-    {{/each}}
+    <br/>
+    {{#if isAdminUser}}
+            {{> accountsAdmin}}
+    {{else}}
+            {{#if isStoreOwner}}
+                    <h2>Welcome Store Owner</h2>
+            {{else}}
+                    <h2>Welcome User</h2>
+            {{/if}}
+            {{#each currentUser.emails}}
+                    <p>{{address}}</p>
+            {{/each}}
+    {{/if}}
 </template>
 
 <template name="home">
@@ -107,17 +117,5 @@
 <template name="map_canvas">
     <div id="map_canvas" class="map"></div>
 </template>
-
-<template name='configureYelp'>
-    <div class="container">
-        <div class="section">
-            <h1>Yelp API Access Configuration</h1>
-            <p class="lead">Do not change if you don't know what you are doing.</p>
-            <p>{{currentConfig}}</p>
-            {{> quickForm schema=configureYelp doc=this id='configureYelp' type='method' meteormethod='configureYelp' buttonClasses="btn btn-primary" buttonContent="Configure Yelp"}}
-        </div>
-    </div>
-</template>
-
 
 

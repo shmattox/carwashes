@@ -6,10 +6,8 @@
 
 restaurants = new Meteor.Collection("discounts");
 
-
 //subscribe to Collection Feeds
 Meteor.subscribe("discounts");
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -19,23 +17,16 @@ Meteor.subscribe("discounts");
 
 //Setup iron router global configuration
 Router.configure({
-                 layoutTemplate: 'masterLayout',
-                 notFoundTemplate: 'notFound',
-                 loadingTemplate: 'loading'
-                 });
+        layoutTemplate: 'masterLayout',
+        notFoundTemplate: 'notFound',
+        loadingTemplate: 'loading'
+});
 
 //Setup iron router page routes
 Router.map(function() {
            this.route('home', {
                       path: '/',
                       waitOn: function(){
-                          //Check Session for Lat/Lng and set if needed
-                          var geo = Geolocation.getInstance();
-                          var x = geo.localize();
-                          if(x.lat){
-                                ServerSession.set("currentLat",x.lat);
-                                ServerSession.set("currentLng",x.lng);
-                      }
                       
                       navigator.geolocation.getCurrentPosition(function(position) {
                                ServerSession.set("currentLat", position.coords.latitude);
@@ -47,7 +38,7 @@ Router.map(function() {
                                            var theResult = JSON.parse(results.content).businesses;
                                            ServerSession.set("yelpResult", theResult);
                                            }
-                                           });
+                                });
                       });
                       
                       },
@@ -112,6 +103,18 @@ Router.map(function() {
                       Voltage.render(this);
                       }
                       });
+           this.route('adminTemplate', {
+                      path:'/admin',
+                      template: 'accountsAdmin',
+                      onBeforeAction: function() {
+                            if (Meteor.loggingIn()) {
+                                    this.render(this.loadingTemplate);
+                            } else if(!Roles.userIsInRole(Meteor.user(), ['admin'])) {
+                                    console.log('redirecting');
+                                    this.redirect('/');
+                            }
+                      }
+                      });
            });
 
 var CW_AfterHooks = {
@@ -125,14 +128,6 @@ var CW_AfterHooks = {
                              var h = $(window).height(), offsetTop = 300;
                              $('#map_canvas').css('height', (h - offsetTop));
                              }).resize();
-            
-            //Check Session for Lat/Lng and set if needed
-            var geo = Geolocation.getInstance();
-            var x = geo.localize();
-            if(x.lat){
-                ServerSession.set("currentLat",x.lat);
-                ServerSession.set("currentLng",x.lng);
-            }
             
             //Get Current Lat/Lng from Session
             var currentLat = ServerSession.get("currentLat");
@@ -206,6 +201,7 @@ var initialize = function(element, centroid, zoom, features) {
                 var theResult = JSON.parse(results.content).businesses;
                 ServerSession.set("yelpResult", theResult);
                 theResult.forEach(function(result){
+                                  
                                   currentAddress = result.location.address;
                                   currentAddress += result.location.city;
                                   
@@ -266,9 +262,9 @@ var initialize = function(element, centroid, zoom, features) {
     //Set Even Trigger
     map.on('popupopen', function() {
            $('.business-listing').click(function(e){
-                                        ServerSession.set("selectedBusiness",this.id);
-                                        Router.go("thebusiness");
-                                        });
+                                ServerSession.set("selectedBusiness",this.id);
+                                Router.go("thebusiness");
+                     });
            });
     
     //Set Custom Marker to Current Location
@@ -279,10 +275,10 @@ var initialize = function(element, centroid, zoom, features) {
     
     //Check for Single Business Selection and Pan the Map to the Lat Lng
     if(ServerSession.get("selectedBusinessData")){
-        var business = ServerSession.get("selectedBusinessData");
-        var lat = business.location.coordinate.latitude;
-        var lng = business.location.coordinate.longitude;
-        map.panTo([lat,lng]).openPopup();
+            var business = ServerSession.get("selectedBusinessData");
+            var lat = business.location.coordinate.latitude;
+            var lng = business.location.coordinate.longitude;
+            map.panTo([lat,lng]).openPopup();
     }
 }
 
@@ -293,14 +289,11 @@ var initialize = function(element, centroid, zoom, features) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 Template.home.yelpResult = function() {
-    
     //Check Session for Lat/Lng and set if needed ( San Fran )
     if(!ServerSession.get("currentLat")){
         ServerSession.set("currentLat","37.523052");
         ServerSession.set("currentLng","-122.375336");
     }
-
-    console.log(ServerSession.get("yelpResult"));
     return ServerSession.get("yelpResult");
 }
 
@@ -326,21 +319,34 @@ Template.thebusiness.business = function() {
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 //                                  Profile PAge
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+Handlebars.registerHelper('isAdminUser', function() {
+                          return Roles.userIsInRole(Meteor.user(), ['admin']);
+                          });
 
+Handlebars.registerHelper('isStoreOwner', function() {
+                          return Roles.userIsInRole(Meteor.user(), ['store-owner']);
+                          });
 //Cart Order Data
 Template.profile.helpers ({
-                          //Cleanup, repeating 3 times in template
-                          email: function () {
-                                var userInfo = Meteor.user();
-                                var userEmail = userInfo.emails;
-                          console.log(userEmail);
-                                return userEmail;
-                          }
-                          });
+          //Cleanup, repeating 3 times in template
+          email: function () {
+                var userInfo = Meteor.user();
+                var userEmail = userInfo.emails;
+                return userEmail;
+          }
+});
+
+Template.adminTemplate.helpers({
+                       // check if user is an admin
+                       isAdminUser: function() {
+                       return Roles.userIsInRole(Meteor.user(), ['admin']);
+                       }
+                       });
+
+
