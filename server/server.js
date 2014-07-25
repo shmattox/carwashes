@@ -67,14 +67,7 @@ Meteor.methods({
 
 Meteor.startup(function () {
                // bootstrap the admin user if they exist -- You'll be replacing the id later
-               if (Meteor.users.findOne("cQBuMJpBR94KaggLg"))
-               Roles.addUsersToRoles("cQBuMJpBR94KaggLg", ['admin']);
-               
-               // create a couple of roles if they don't already exist (THESE ARE NOT NEEDED -- just for the demo)
-               if(!Meteor.roles.findOne({name: "owner"}))
-               Roles.createRole("owner");
-               
-               if(!Meteor.roles.findOne({name: "user"}))
-               Roles.createRole("user");
+               if (Meteor.users.findOne("BWhox8eWXRy9Mh4DL"))
+               Roles.addUsersToRoles("BWhox8eWXRy9Mh4DL", ['admin']);
 });
 
