@@ -72,19 +72,7 @@
 </template>
 
 <template name="profile">
-    <br/>
-    {{#if isAdminUser}}
-            {{> accountsAdmin}}
-    {{else}}
-            {{#if isStoreOwner}}
-                    <h2>Welcome Store Owner</h2>
-            {{else}}
-                    <h2>Welcome User</h2>
-            {{/if}}
-            {{#each currentUser.emails}}
-                    <p>{{address}}</p>
-            {{/each}}
-    {{/if}}
+    {{> adminTemplate}}
 </template>
 
 <template name="home">
@@ -116,6 +104,22 @@
 
 <template name="map_canvas">
     <div id="map_canvas" class="map"></div>
+</template>
+
+<template name="adminTemplate">
+    <br/>
+    {{#if isAdminUser}}
+            {{> accountsAdmin}}
+    {{else}}
+            {{#if isStoreOwner}}
+                <h2>Welcome Store Owner</h2>
+            {{else}}
+                <h2>Welcome User</h2>
+            {{/if}}
+            {{#each currentUser.emails}}
+                <p>{{address}}</p>
+            {{/each}}
+    {{/if}}
 </template>
 
 

@@ -103,6 +103,18 @@ Router.map(function() {
                       Voltage.render(this);
                       }
                       });
+           this.route('adminTemplate', {
+                      path:'/admin',
+                      template: 'accountsAdmin',
+                      onBeforeAction: function() {
+                            if (Meteor.loggingIn()) {
+                                    this.render(this.loadingTemplate);
+                            } else if(!Roles.userIsInRole(Meteor.user(), ['admin'])) {
+                                    console.log('redirecting');
+                                    this.redirect('/');
+                            }
+                      }
+                      });
            });
 
 var CW_AfterHooks = {
