@@ -87,11 +87,18 @@
 </template>
 
 <template name="thebusiness">
-    <div id="business_page_header {{business.id}}">
+    <div id="business_page_header {{business.id}}" class="col-md-8">
     <h3>{{business.name}}</h3>
     {{#if business.phone}}<p>Phone: {{business.phone}}</p>{{/if}}
     <img id="star_rating" src="{{business.rating_img_url}}"/>
     <p><b>{{business.location.address}}</b>, {{business.location.city}}</p>
+    </div>
+    <div class="col-md-4">
+        {{#if isClaimed}}
+                <a href="" id="edit_listing" class="btn btn-success">Edit Your Listing</a>
+        {{else}}
+                <a href="" id="claim_listing" class="btn btn-danger">Claim This Listing</a>
+        {{/if}}
     </div>
     {{> map}}
 </template>
@@ -113,13 +120,17 @@
     {{else}}
             {{#if isStoreOwner}}
                 <h2>Welcome Store Owner</h2>
+                {{> profileInfo}}
             {{else}}
                 <h2>Welcome User</h2>
+                {{> profileInfo}}
             {{/if}}
-            {{#each currentUser.emails}}
-                <p>{{address}}</p>
-            {{/each}}
     {{/if}}
 </template>
 
+<template name="profileInfo">
+    {{#each currentUser.emails}}
+        <p>{{address}}</p>
+    {{/each}}
+</template>
 

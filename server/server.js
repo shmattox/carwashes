@@ -1,10 +1,11 @@
-//Discounts = new Meteor.Collection("discounts");
-//
+Claimed = new Meteor.Collection("claimed");
+//Claimed.remove({});
+
 ////publish discounts data
-//Meteor.publish("discounts", function() {
-//               return Discounts.find();
-//               });
-//
+Meteor.publish("claimed", function() {
+               return Claimed.find();
+               });
+
 
 var getYelpOauthBinding = function(url) {
     var config = ServiceConfiguration.configurations.findOne({service: "yelp"});
@@ -61,6 +62,10 @@ Meteor.methods({
                },
                getProfile: function(str) {
                         return Meteor.user({_id:Meteor.userId()});
+               },
+               claimListing: function(str) {
+                        console.log(str);
+                        Claimed.insert(str);
                }
                
                });

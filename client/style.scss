@@ -22,6 +22,8 @@ padding: 12px;
 }
 #map-container {
     border-bottom: 1px solid black;
+    width: 100%;
+    float: left;
 }
 
 .leaflet-div-icon {
@@ -77,9 +79,12 @@ footer .col-sm-4:nth-of-type(3) {
 text-align: right;
 }
 
-
 #login-dropdown-list .dropdown-menu {
 			float: right !important;
 			right: 0 !important;
 			left: auto !important;
+}
+#claim_listing, #edit_listing {
+margin-top: 20px;
+float: right;
 }

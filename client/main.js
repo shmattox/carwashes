@@ -4,10 +4,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-restaurants = new Meteor.Collection("discounts");
+Claimed = new Meteor.Collection("claimed");
 
 //subscribe to Collection Feeds
-Meteor.subscribe("discounts");
+Meteor.subscribe("claimed");
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -312,16 +312,40 @@ Template.home.events({
 
 //Print Single Business Data to The Business Page
 Template.thebusiness.business = function() {
-    if(ServerSession.get("selectedBusinessData")){
+    var result = ServerSession.get("selectedBusinessData");
+    if(result){
+        if(Claimed.findOne({storeId:result.id})){
+                ServerSession.set("claimedInfo",Claimed.findOne({storeId:result.id}));
+        }
         return(ServerSession.get("selectedBusinessData"));
     }else {
         return "no data received from server";
     }
 }
 
+//Print Single Business Data to The Business Page
+Template.thebusiness.isClaimed = function() {
+    return ServerSession.get("claimedInfo");
+}
+Template.thebusiness.events({
+                     "click #claim_listing": function(){
+                            console.log("Claim this listing");
+                            var result = ServerSession.get("selectedBusinessData");
+                            var claimed_listing = {
+                                    ownerId: Meteor.userId(),
+                                    storeId: result.id,
+                                    state: result.location.state,
+                                    city:  result.location.city,
+                                    discounts: []
+                            };
+                            
+                            Meteor.call("claimListing",claimed_listing);
+                     }
+                     });
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-//                                  Profile PAge
+//                                  Profile Page
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
