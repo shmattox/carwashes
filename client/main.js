@@ -373,4 +373,17 @@ Template.adminTemplate.helpers({
                        }
                        });
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+//                                  Startup Page
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
+Meteor.startup(function() {
+               return SEO.config({
+                                 title: 'Local Car Wash Near Me',
+                                 meta: {
+                                 'description': 'Find the best deals and discounts on local car washes near me.',
+                                 'viewport': 'initial-scale=1.0'
+                                 }
+                                 });
+               });
