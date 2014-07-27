@@ -133,7 +133,7 @@ var CW_AfterHooks = {
             var currentLat = ServerSession.get("currentLat");
             var currentLng = ServerSession.get("currentLng");
             
-            initialize($("#map_canvas")[0], [ currentLat, currentLng ], 10);
+            initialize($("#map_canvas")[0], [ ServerSession.get("currentLat"), ServerSession.get("currentLng") ], 10);
             
             $("#business-listing").on("click", function(e) {
                                       e.preventDefault();
