@@ -187,9 +187,9 @@ var initialize = function(element, centroid, zoom, features) {
     //Build Map initial map settings
     map = L.map(element, {
                 scrollWheelZoom: false,
-                doubleClickZoom: false,
+                doubleClickZoom: true,
                 boxZoom: false,
-                touchZoom: false
+                touchZoom: true
                 }).setView(new L.LatLng(centroid[0], centroid[1]), zoom);
     
     //Set Default Image Path

@@ -17,7 +17,8 @@
       "bootstrap-3": {},
       "kadira": {},
       "accounts-ui-bootstrap-3": {},
-      "accounts-admin-ui-bootstrap-3": {}
+      "accounts-admin-ui-bootstrap-3": {},
+      "ms-seo": {}
     },
     "packages": {
       "iron-router": {
@@ -52,8 +53,8 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.15.3",
-        "commit": "b0574c71d33ea8ecff397b3bf054601fb979e0b8"
+        "tag": "v0.16.1",
+        "commit": "34a447fd3a1b3164c78f865aabbac3ddc2d033fb"
       },
       "npm": {
         "git": "https://github.com/arunoda/meteor-npm.git",
@@ -100,6 +101,11 @@
         "tag": "v0.2.6",
         "commit": "fe74692303daf73d440f2729010bcf1557af62ca"
       },
+      "ms-seo": {
+        "git": "https://github.com/DerMambo/ms-seo",
+        "tag": "v0.2.6",
+        "commit": "1a4ba31a1f6f29009d3941e9dd883829ff4e4b8b"
+      },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
@@ -112,8 +118,8 @@
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.4.2",
-        "commit": "4ff4b707bec8be434919730bf101325adb215444"
+        "tag": "v0.4.3",
+        "commit": "cb470de2cfeebeccbf76d4cc0a39ad4afc76d553"
       },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
